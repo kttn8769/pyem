@@ -323,6 +323,9 @@ def cryosparc_2_cs_model_parameters(cs, df=None, minphic=0):
     if df is None:
         df = pd.DataFrame()
     phic_names = [n for n in cs.dtype.names if "class_posterior" in n]
+    if len(phic_names) == 2 and 'alignments2D/class_posterior' in phic_names and 'alignments3D/class_posterior' in phic_names:
+        log.info("Both alignments2D and alignments3D were found. Ignore alignments2D parameters.")
+        phic_names = ['alignments3D/class_posterior']
     if len(phic_names) > 1:
         log.info("Collecting particle parameters from most likely classes")
         phic = np.array([cs[p] for p in phic_names])
